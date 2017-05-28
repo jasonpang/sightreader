@@ -18,11 +18,15 @@ namespace Engine
 
         public SightReaderMode Mode { get; private set; }
 
-        public Processor Processor { get; private set; }
+        public InputProcessor InputProcessor { get; private set; }
+        public SongProcessor SongProcessor { get; private set; }
+
+        public Song Song { get; private set; }
 
         public SightReader()
         {
-            Processor = new Processor(this);
+            InputProcessor = new InputProcessor(this);
+            SongProcessor = new SongProcessor(this);
         }
 
         public ReadOnlyCollection<InputDevice> GetMidiInputDevices()
@@ -42,9 +46,9 @@ namespace Engine
             Trace.WriteLine($"Setting new MIDI input '{device.Name}'.");
             Input = device;
             Trace.WriteLine($"Installing input event handlers.");
-            Input.NoteOn += Processor.OnNoteOn;
-            Input.NoteOff += Processor.OnNoteOff;
-            Input.ControlChange += Processor.OnControlChange;
+            Input.NoteOn += InputProcessor.OnNoteOn;
+            Input.NoteOff += InputProcessor.OnNoteOff;
+            Input.ControlChange += InputProcessor.OnControlChange;
             Trace.WriteLine($"Opening MIDI input.");
             Input.Open();
             Input.StartReceiving(null);
@@ -109,10 +113,12 @@ namespace Engine
         public event EventHandler MidiInputChanged;
         public event EventHandler MidiOutputChanged;
         public event EventHandler ModeChanged;
+        public event EventHandler SongChanged;
 
         public void SetFile(string filePath)
         {
-
+            Song = SongProcessor.Process(filePath);
+            SongChanged?.Invoke(this, null);
         }
 
         public void Dispose()

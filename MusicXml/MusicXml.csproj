@@ -58,8 +58,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\AboveBelowType.cs" />
+    <Compile Include="Domain\ArpeggiateNotation.cs" />
     <Compile Include="Domain\Backup.cs" />
+    <Compile Include="Domain\HorizontalTurn.cs" />
     <Compile Include="Domain\Forward.cs" />
+    <Compile Include="Domain\GlissandoNotation.cs" />
     <Compile Include="Domain\MeasureElement.cs" />
     <Compile Include="Domain\Clef.cs" />
     <Compile Include="Domain\Encoding.cs" />
@@ -68,11 +72,25 @@
     <Compile Include="Domain\Lyric.cs" />
     <Compile Include="Domain\Measure.cs" />
     <Compile Include="Domain\MeasureAttributes.cs" />
+    <Compile Include="Domain\Mordent.cs" />
+    <Compile Include="Domain\Notations.cs" />
     <Compile Include="Domain\Note.cs" />
+    <Compile Include="Domain\Ornaments.cs" />
     <Compile Include="Domain\Part.cs" />
     <Compile Include="Domain\Pitch.cs" />
     <Compile Include="Domain\Score.cs" />
+    <Compile Include="Domain\StartNoteType.cs" />
+    <Compile Include="Domain\StartStopContinueType.cs" />
+    <Compile Include="Domain\StartStopType.cs" />
+    <Compile Include="Domain\Tie.cs" />
+    <Compile Include="Domain\Tied.cs" />
     <Compile Include="Domain\Time.cs" />
+    <Compile Include="Domain\TrillOrnament.cs" />
+    <Compile Include="Domain\TrillStepType.cs" />
+    <Compile Include="Domain\Tuplet.cs" />
+    <Compile Include="Domain\TwoNoteTurnType.cs" />
+    <Compile Include="Domain\UpDownDirection.cs" />
+    <Compile Include="Domain\WavyLineOrnament.cs" />
     <Compile Include="MusicXmlParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -11,5 +11,11 @@ namespace Engine
 {
     public class Song
     {
+        public String FilePath { get; }
+
+        public Song(String filePath)
+        {
+            FilePath = filePath;
+        }
     }
 }

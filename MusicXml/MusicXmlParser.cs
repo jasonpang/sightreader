@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using MusicXml.Domain;
 using Encoding = MusicXml.Domain.Encoding;
+using System.Collections.Generic;
 
 namespace MusicXml
 {
@@ -148,40 +149,303 @@ namespace MusicXml
 			return backup;
 		}
 
-		private static Note GetNote(XmlNode noteNode)
-		{
-			var note = new Note();
+        private static Note GetNote(XmlNode noteNode)
+        {
+            var note = new Note();
 
-			var typeNode = noteNode.SelectSingleNode("type");
-			if (typeNode != null)
-				note.Type = typeNode.InnerText;
+            var typeNode = noteNode.SelectSingleNode("type");
+            if (typeNode != null)
+                note.Type = typeNode.InnerText;
 
-			var voiceNode = noteNode.SelectSingleNode("voice");
-			if (voiceNode != null)
-				note.Voice = Convert.ToInt32(voiceNode.InnerText);
+            var voiceNode = noteNode.SelectSingleNode("voice");
+            if (voiceNode != null)
+                note.Voice = Convert.ToInt32(voiceNode.InnerText);
 
-			var durationNode = noteNode.SelectSingleNode("duration");
-			if (durationNode != null)
-				note.Duration = Convert.ToInt32(durationNode.InnerText);
+            var durationNode = noteNode.SelectSingleNode("duration");
+            if (durationNode != null)
+                note.Duration = Convert.ToInt32(durationNode.InnerText);
 
-			note.Pitch = GetPitch(noteNode);
+            note.Pitch = GetPitch(noteNode);
 
-			var staffNode = noteNode.SelectSingleNode("staff");
-			if (staffNode != null)
-				note.Staff = Convert.ToInt32(staffNode.InnerText);
+            var staffNode = noteNode.SelectSingleNode("staff");
+            if (staffNode != null)
+                note.Staff = Convert.ToInt32(staffNode.InnerText);
 
-			var chordNode = noteNode.SelectSingleNode("chord");
-			if (chordNode != null)
-				note.IsChordTone = true;
-			
-			var restNode = noteNode.SelectSingleNode("rest");
-			if (restNode != null)
-				note.IsRest = true;
+            var chordNode = noteNode.SelectSingleNode("chord");
+            if (chordNode != null)
+                note.IsChord = true;
 
-			return note; 
-		}
+            var restNode = noteNode.SelectSingleNode("rest");
+            if (restNode != null)
+                note.IsRest = true;
 
-		private static Pitch GetPitch(XmlNode noteNode)
+            var notationsNode = noteNode.SelectSingleNode("notations");
+            if (notationsNode != null)
+            {
+                note.Notations = GetNotations(notationsNode);
+            }
+
+            var tieNode = noteNode.SelectSingleNode("tie");
+            if (tieNode != null)
+            {
+                if (tieNode.Attributes != null)
+                {
+                    note.Tie = new Tie();
+                    if (tieNode.Attributes["type"].InnerText == "start")
+                    {
+                        note.Tie.Type = StartStopType.Start;
+                    }
+                    else
+                    {
+                        note.Tie.Type = StartStopType.Stop;
+                    }
+                }
+            }
+
+            var graceNode = noteNode.SelectSingleNode("grace");
+            if (graceNode != null)
+                note.IsGrace = true;
+
+            var dotNode = noteNode.SelectSingleNode("dot");
+            if (dotNode != null)
+                note.IsDotted = true;
+
+            var accidentalNode = noteNode.SelectSingleNode("accidental");
+            if (accidentalNode != null)
+                note.Accidental = accidentalNode.InnerText;
+
+            return note;
+        }
+
+        private static Notations GetNotations(XmlNode noteNode)
+        {
+            var notations = new Notations();
+
+            var notationsChildren = noteNode.ChildNodes;
+            foreach (XmlNode node in notationsChildren)
+            {
+                if (node.Name == "arpeggiate")
+                {
+                    notations.Arpeggiate = GetArpeggiate(node);
+                }
+                if (node.Name == "glissando")
+                {
+                    notations.Glissando = GetGlissando(node);
+                }
+                if (node.Name == "ornaments")
+                {
+                    notations.Ornaments = GetOrnaments(node);
+                }
+                if (node.Name == "tied")
+                {
+                    if (node.Attributes != null)
+                    {
+                        notations.Tied = new Tied();
+                        if (node.Attributes["type"].InnerText == "start")
+                        {
+                            notations.Tied.Type = StartStopContinueType.Start;
+                        }
+                        else if (node.Attributes["type"].InnerText == "stop")
+                        {
+                            notations.Tied.Type = StartStopContinueType.Stop;
+                        }
+                        else
+                        {
+                            notations.Tied.Type = StartStopContinueType.Continue;
+                        }
+                    }
+                }
+                if (node.Name == "tuplet")
+                {
+                    notations.IsTupliet = true;
+                }
+            }
+
+            return notations;
+        }
+
+        private static Ornaments GetOrnaments(XmlNode noteNode)
+        {
+            var ornaments = new Ornaments();
+
+            var ornamentsChildren = noteNode.ChildNodes;
+            foreach (XmlNode node in ornamentsChildren)
+            {
+                if (node.Name == "delayed-inverted-turn")
+                {
+                    ornaments.IsTurn = true;
+                }
+                if (node.Name == "delayed-turn")
+                {
+                    ornaments.IsTurn = true;
+                }
+                if (node.Name == "inverted-turn")
+                {
+                    ornaments.IsTurn = true;
+                }
+                if (node.Name == "turn")
+                {
+                    ornaments.IsTurn = true;
+                }
+                if (node.Name == "trill")
+                {
+                    ornaments.IsTrill = true;
+                }
+                if (node.Name == "wavy-line")
+                {
+                    if (node.Attributes["type"].InnerText == "start" ||
+                        node.Attributes["type"].InnerText == "continue")
+                    {
+                        ornaments.IsTrillStart = true;
+                    } else
+                    {
+                        ornaments.IsTrillStop = true;
+                    }
+                }
+            }
+
+            return ornaments;
+        }
+
+        private static HorizontalTurn GetHorizontalTurn(XmlNode noteNode)
+        {
+            var notation = new HorizontalTurn();
+            if (noteNode.Attributes != null)
+            {
+                if (noteNode.Attributes["start-note"] != null)
+                {
+                    notation.StartNote = GetStartNote(noteNode);
+                }
+                if (noteNode.Attributes["trill-step"] != null)
+                {
+                    notation.TrillStep = GetTrillStep(noteNode);
+                }
+                if (noteNode.Attributes["two-note-turn"] != null)
+                {
+                    notation.TwoNoteTurn = GetTwoNoteTurn(noteNode);
+                }
+            }
+
+            return notation;
+        }
+
+        private static ArpeggiateNotation GetArpeggiate(XmlNode noteNode)
+        {
+            var notation = new ArpeggiateNotation();
+            if (noteNode.Attributes != null)
+            {
+                if (noteNode.Attributes["direction"] != null)
+                {
+                    notation.Direction = GetUpDownDirection(noteNode);
+                }
+            }
+
+            return notation;
+        }
+
+        private static GlissandoNotation GetGlissando(XmlNode noteNode)
+        {
+            var notation = new GlissandoNotation();
+            if (noteNode.Attributes != null)
+            {
+                if (noteNode.Attributes["type"] != null)
+                {
+                    notation.Type = GetStartStop(noteNode);
+                }
+            }
+
+            return notation;
+        }
+
+        private static UpDownDirection GetUpDownDirection(XmlNode noteNode)
+        {
+            if (noteNode.Attributes["direction"].InnerText == "down")
+            {
+                return UpDownDirection.Down;
+            }
+            else
+            {
+                return UpDownDirection.Up;
+            }
+        }
+
+        private static StartNoteType GetStartNote(XmlNode noteNode)
+        {
+            if (noteNode.Attributes["start-note"].InnerText == "upper")
+            {
+                return StartNoteType.Upper;
+            }
+            else if (noteNode.Attributes["start-note"].InnerText == "main")
+            {
+                return StartNoteType.Main;
+            }
+            else
+            {
+                return StartNoteType.Below;
+            }
+        }
+
+        private static TrillStepType GetTrillStep(XmlNode noteNode)
+        {
+            if (noteNode.Attributes["trill-step"].InnerText == "whole")
+            {
+                return TrillStepType.Whole;
+            }
+            else if (noteNode.Attributes["trill-step"].InnerText == "half")
+            {
+                return TrillStepType.Half;
+            }
+            else
+            {
+                return TrillStepType.Unison;
+            }
+        }
+
+        private static TwoNoteTurnType GetTwoNoteTurn(XmlNode noteNode)
+        {
+            if (noteNode.Attributes["two-note-turn"].InnerText == "whole")
+            {
+                return TwoNoteTurnType.Whole;
+            }
+            else if (noteNode.Attributes["two-note-turn"].InnerText == "half")
+            {
+                return TwoNoteTurnType.Half;
+            }
+            else
+            {
+                return TwoNoteTurnType.None;
+            }
+        }
+
+        private static StartStopType GetStartStop(XmlNode noteNode)
+        {
+            if (noteNode.Attributes["start-stop"].InnerText == "start")
+            {
+                return StartStopType.Start;
+            }
+            else
+            {
+                return StartStopType.Stop;
+            }
+        }
+
+        private static StartStopContinueType GetStartStopContinue(XmlNode noteNode)
+        {
+            if (noteNode.Attributes["start-stop-continue"].InnerText == "start")
+            {
+                return StartStopContinueType.Start;
+            }
+            else if (noteNode.Attributes["start-stop-continue"].InnerText == "stop")
+            {
+                return StartStopContinueType.Stop;
+            }
+            else
+            {
+                return StartStopContinueType.Continue;
+            }
+        }
+
+        private static Pitch GetPitch(XmlNode noteNode)
 		{
 			var pitch = new Pitch();
 			var pitchNode = noteNode.SelectSingleNode("pitch");

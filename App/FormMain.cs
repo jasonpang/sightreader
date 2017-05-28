@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -25,6 +27,7 @@ namespace App
             SightReader.MidiInputChanged += SightReader_MidiInputChanged;
             SightReader.MidiOutputChanged += SightReader_MidiOutputChanged;
             SightReader.ModeChanged += SightReader_ModeChanged;
+            SightReader.SongChanged += SightReader_SongChanged;
         }
 
         private void SightReader_MidiInputChanged(object sender, EventArgs e)
@@ -40,6 +43,11 @@ namespace App
         private void SightReader_ModeChanged(object sender, EventArgs e)
         {
             StatusBar_Mode.Text = SightReader.Mode.ToString();
+        }
+
+        private void SightReader_SongChanged(object sender, EventArgs e)
+        {
+            StatusBar_FileName.Text = Path.GetFileName(SightReader.Song.FilePath);
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -128,6 +136,25 @@ namespace App
                 outputDevice.SendNoteOff(Channel.Channel1, Pitch.E4, 50);
                 outputDevice.SendNoteOff(Channel.Channel1, Pitch.G4, 50);
             });
+        }
+
+        private void FormMain_DragDrop(object sender, DragEventArgs e)
+        {
+            var filesList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            if (filesList != null && filesList.Length > 0)
+            {
+                var file = filesList.First();
+                Trace.WriteLine($"Processing file '{file}'");
+                SightReader.SetFile(file);
+            }
+        }
+
+        private void FormMain_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
         }
     }
 }

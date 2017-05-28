@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public class Processor
+    public class InputProcessor
     {
         private SightReader SightReader { get; set; }
         private Song song;
 
-        public Processor(SightReader sightReader)
+        public InputProcessor(SightReader sightReader)
         {
             SightReader = sightReader;
             SightReader.ModeChanged += SightReader_ModeChanged;

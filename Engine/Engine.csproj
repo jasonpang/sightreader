@@ -43,9 +43,10 @@
     <Compile Include="Models\SightReaderContext.cs" />
     <Compile Include="Models\SightReaderMode.cs" />
     <Compile Include="Models\Song.cs" />
-    <Compile Include="Processor.cs" />
+    <Compile Include="InputProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SightReader.cs" />
+    <Compile Include="SongProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Parser\" />
@@ -54,6 +55,10 @@
     <ProjectReference Include="..\Midi\Midi.csproj">
       <Project>{F60D8B7B-2D2E-4B94-A736-3783FFE1A25C}</Project>
       <Name>Midi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MusicXml\MusicXml.csproj">
+      <Project>{42acdd70-26da-4737-b490-282a21b170e6}</Project>
+      <Name>MusicXml</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
