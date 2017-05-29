@@ -7,7 +7,7 @@ namespace MusicXml.Domain
 {
     public class Notations
     {
-        public ArpeggiateNotation Arpeggiate { get; set; } = new ArpeggiateNotation();
+        public bool IsArpeggiated { get; set; }
 
         public GlissandoNotation Glissando { get; set; } = new GlissandoNotation();
 

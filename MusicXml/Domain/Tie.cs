@@ -7,7 +7,9 @@ namespace MusicXml.Domain
 {
     public class Tie
     {
-        public StartStopType Type { get; set; }
+        public bool IsStart { get; set; }
+
+        public bool IsStop { get; set; }
 
         public int Number { get; set; }
     }

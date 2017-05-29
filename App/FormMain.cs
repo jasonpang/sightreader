@@ -56,6 +56,7 @@ namespace App
             PopulateMidiInputOutputs();
             PopulateModes();
             ChooseDefaultMidiInputOutput();
+            LoadDefaultMidiFile();
         }
 
         private void PopulateMidiInputOutputs()
@@ -105,6 +106,11 @@ namespace App
             }
         }
 
+        private void LoadDefaultMidiFile()
+        {
+            SightReader.SetFile(@"C:\Users\Jason\Documents\OCR Sheet Music Converted\No_Game_No_Life_-_This_Game_-_Piano.xml");
+        }
+
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             SightReader.Dispose();
@@ -120,11 +126,11 @@ namespace App
                 outputDevice.SendControlChange(Channel.Channel1, Midi.Control.SustainPedal, 0);
                 outputDevice.SendPitchBend(Channel.Channel1, 8192);
                 // Play C, E, G in half second intervals.
-                outputDevice.SendNoteOn(Channel.Channel1, Pitch.C4, 50);
+                outputDevice.SendNoteOn(Channel.Channel1, Midi.Pitch.C4, 50);
                 Thread.Sleep(500);
-                outputDevice.SendNoteOn(Channel.Channel1, Pitch.E4, 50);
+                outputDevice.SendNoteOn(Channel.Channel1, Midi.Pitch.E4, 50);
                 Thread.Sleep(500);
-                outputDevice.SendNoteOn(Channel.Channel1, Pitch.G4, 50);
+                outputDevice.SendNoteOn(Channel.Channel1, Midi.Pitch.G4, 50);
                 Thread.Sleep(500);
 
                 // Now apply the sustain pedal.
@@ -132,9 +138,9 @@ namespace App
 
                 // Now release the C chord notes, but they should keep ringing because of the sustain
                 // pedal.
-                outputDevice.SendNoteOff(Channel.Channel1, Pitch.C4, 50);
-                outputDevice.SendNoteOff(Channel.Channel1, Pitch.E4, 50);
-                outputDevice.SendNoteOff(Channel.Channel1, Pitch.G4, 50);
+                outputDevice.SendNoteOff(Channel.Channel1, Midi.Pitch.C4, 50);
+                outputDevice.SendNoteOff(Channel.Channel1, Midi.Pitch.E4, 50);
+                outputDevice.SendNoteOff(Channel.Channel1, Midi.Pitch.G4, 50);
             });
         }
 
@@ -152,7 +158,7 @@ namespace App
         private void FormMain_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
+                e.Effect = DragDropEffects.Link;
             else
                 e.Effect = DragDropEffects.None;
         }

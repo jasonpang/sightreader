@@ -185,19 +185,25 @@ namespace MusicXml
                 note.Notations = GetNotations(notationsNode);
             }
 
-            var tieNode = noteNode.SelectSingleNode("tie");
-            if (tieNode != null)
+            var tieNodes = noteNode.SelectNodes("tie");
+            foreach (XmlNode tieNode in tieNodes)
             {
-                if (tieNode.Attributes != null)
+                if (tieNode != null)
                 {
-                    note.Tie = new Tie();
-                    if (tieNode.Attributes["type"].InnerText == "start")
+                    if (note.Tie == null)
                     {
-                        note.Tie.Type = StartStopType.Start;
+                        note.Tie = new Tie();
                     }
-                    else
+                    if (tieNode.Attributes != null)
                     {
-                        note.Tie.Type = StartStopType.Stop;
+                        if (tieNode.Attributes["type"].InnerText == "start")
+                        {
+                            note.Tie.IsStart = true;
+                        }
+                        if (tieNode.Attributes["type"].InnerText == "stop")
+                        {
+                            note.Tie.IsStop = true;
+                        }
                     }
                 }
             }
@@ -226,7 +232,7 @@ namespace MusicXml
             {
                 if (node.Name == "arpeggiate")
                 {
-                    notations.Arpeggiate = GetArpeggiate(node);
+                    notations.IsArpeggiated = true;
                 }
                 if (node.Name == "glissando")
                 {

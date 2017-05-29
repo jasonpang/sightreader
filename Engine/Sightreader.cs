@@ -118,6 +118,7 @@ namespace Engine
         public void SetFile(string filePath)
         {
             Song = SongProcessor.Process(filePath);
+            SetMode(SightReaderMode.Sightreading);
             SongChanged?.Invoke(this, null);
         }
 
