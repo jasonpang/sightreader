@@ -30,9 +30,44 @@ namespace App
             SightReader.SongChanged += SightReader_SongChanged;
         }
 
+        private void Input_NoteOn(NoteOnMessage msg)
+        {
+            if (SightReader.Song != null && SightReader.Song.Parts.Count > 0)
+            {
+                var highestMeasureIndex = 0;
+                foreach (var part in SightReader.Song.Parts)
+                {
+                    foreach (var stave in part.Staves)
+                    {
+                        highestMeasureIndex = Math.Max(stave.MeasureIndex, highestMeasureIndex);
+                    }
+                }
+                StatusBar_Measure.Text = $"Measure {highestMeasureIndex.ToString()}";
+            }
+        }
+
+        private void TextBox_Measure_TextChanged(object sender, EventArgs e)
+        {
+            TrySetMeasure();
+        }
+
+        private void TrySetMeasure()
+        {
+            try
+            {
+                var number = Convert.ToInt32(TextBox_Measure.Text);
+                SightReader.SetMeasure(number);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         private void SightReader_MidiInputChanged(object sender, EventArgs e)
         {
             StatusBar_Input.Text = SightReader.Input.Name;
+            //SightReader.Input.NoteOn += Input_NoteOn;
         }
 
         private void SightReader_MidiOutputChanged(object sender, EventArgs e)
@@ -161,6 +196,27 @@ namespace App
                 e.Effect = DragDropEffects.Link;
             else
                 e.Effect = DragDropEffects.None;
+        }
+
+        private void FormMain_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Home)
+            {
+                foreach (var stave in SightReader.Song.Parts[0].Staves)
+                {
+                    stave.MeasureIndex = 0;
+                }
+            }
+        }
+
+        private void MainMenu_Debug_Break_Click(object sender, EventArgs e)
+        {
+            Debugger.Break();
+        }
+
+        private void Button_ChangeMeasure_Click(object sender, EventArgs e)
+        {
+            TrySetMeasure();
         }
     }
 }

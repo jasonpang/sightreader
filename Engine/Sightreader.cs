@@ -56,6 +56,24 @@ namespace Engine
             MidiInputChanged?.Invoke(this, null);
         }
 
+        public void SetMeasure(int number)
+        {
+            if (number > 0 && number <= Song.Parts.First().Staves.First().Measures.Count)
+            {
+                foreach (var part in Song.Parts)
+                {
+                    foreach (var stave in part.Staves)
+                    {
+                        stave.MeasureIndex = number - 1;
+                        foreach (var measure in stave.Measures)
+                        {
+                            measure.MeasureElementIndex = 0;
+                        }
+                    }
+                }
+            }
+        }
+
         public void CloseMidiInput()
         {
             if (Input != null)

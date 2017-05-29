@@ -57,15 +57,15 @@ namespace Engine
             Stave stave = null;
             if (hand == HandType.LeftHand)
             {
-                stave = song.Parts.First().Staves[0];
+                stave = song.Parts.First().Staves[1];
             }
             else
             {
-                stave = song.Parts.First().Staves[1];
+                stave = song.Parts.First().Staves[0];
             }
 
             var measure = stave.Measures[stave.MeasureIndex];
-            var measureElement = measure[measure.MeasureElementIndex];
+            var measureElement = measure.Elements[measure.MeasureElementIndex];
             if (measureElement is Models.Note)
             {
                 var note = (Models.Note)measureElement;
@@ -80,14 +80,19 @@ namespace Engine
                 var chord = (Models.Chord)measureElement;
                 var notesOffList = new List<Midi.Pitch>();
                 Debug.WriteLine($"Measure {stave.MeasureIndex}, Element {measure.MeasureElementIndex}: {chord.ToString()}");
-                foreach (var note in chord)
+                foreach (var note in chord.Notes)
                 {
                     SightReader.Output.SendNoteOn(message.Channel, note.Pitch.ToMidiPitch(), message.Velocity);
                     notesOffList.Add(note.Pitch.ToMidiPitch());
                 }
                 OnOffMap[message.Pitch] = notesOffList;
             }
-            stave.MeasureIndex++;
+            stave.Measures[stave.MeasureIndex].MeasureElementIndex++;
+            if (stave.Measures[stave.MeasureIndex].MeasureElementIndex >= stave.Measures[stave.MeasureIndex].Elements.Count)
+            {
+                stave.Measures[stave.MeasureIndex].MeasureElementIndex = 0;
+                stave.MeasureIndex++;
+            }
         }
 
         private void SightReadOff(NoteOffMessage message)

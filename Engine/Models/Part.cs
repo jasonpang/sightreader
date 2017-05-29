@@ -9,5 +9,10 @@ namespace Engine.Models
     public class Part
     {
         public List<Stave> Staves { get; set; } = new List<Stave>();
+
+        public override string ToString()
+        {
+            return $"Part ({Staves.Count} staves)";
+        }
     }
 }

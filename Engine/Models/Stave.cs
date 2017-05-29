@@ -11,5 +11,10 @@ namespace Engine.Models
         public int MeasureIndex { get; set; }
 
         public List<Measure> Measures { get; set; } = new List<Measure>();
+
+        public override string ToString()
+        {
+            return $"Stave ({Measures.Count} measures)";
+        }
     }
 }

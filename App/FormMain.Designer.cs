@@ -37,6 +37,7 @@
             this.MainMenu_Program_Mode = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu_Debug_SendOutput = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainMenu_Debug_Break = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.StatusBar_Mode = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -45,6 +46,10 @@
             this.StatusBar_Output = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBar_FileName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBar_Measure = new System.Windows.Forms.ToolStripStatusLabel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.TextBox_Measure = new System.Windows.Forms.TextBox();
+            this.Button_ChangeMeasure = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.SuspendLayout();
@@ -103,7 +108,8 @@
             // debugToolStripMenuItem
             // 
             this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MainMenu_Debug_SendOutput});
+            this.MainMenu_Debug_SendOutput,
+            this.MainMenu_Debug_Break});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             this.debugToolStripMenuItem.Size = new System.Drawing.Size(112, 42);
             this.debugToolStripMenuItem.Text = "Debug";
@@ -114,6 +120,13 @@
             this.MainMenu_Debug_SendOutput.Size = new System.Drawing.Size(264, 42);
             this.MainMenu_Debug_SendOutput.Text = "Send Output";
             this.MainMenu_Debug_SendOutput.Click += new System.EventHandler(this.MainMenu_Debug_SendOutput_Click);
+            // 
+            // MainMenu_Debug_Break
+            // 
+            this.MainMenu_Debug_Break.Name = "MainMenu_Debug_Break";
+            this.MainMenu_Debug_Break.Size = new System.Drawing.Size(264, 42);
+            this.MainMenu_Debug_Break.Text = "Break";
+            this.MainMenu_Debug_Break.Click += new System.EventHandler(this.MainMenu_Debug_Break_Click);
             // 
             // StatusBar
             // 
@@ -126,7 +139,8 @@
             this.toolStripStatusLabel1,
             this.StatusBar_Output,
             this.toolStripStatusLabel2,
-            this.StatusBar_FileName});
+            this.StatusBar_FileName,
+            this.StatusBar_Measure});
             this.StatusBar.Location = new System.Drawing.Point(0, 776);
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.Padding = new System.Windows.Forms.Padding(2, 0, 23, 0);
@@ -175,16 +189,52 @@
             this.StatusBar_FileName.Name = "StatusBar_FileName";
             this.StatusBar_FileName.Size = new System.Drawing.Size(0, 38);
             // 
+            // StatusBar_Measure
+            // 
+            this.StatusBar_Measure.Name = "StatusBar_Measure";
+            this.StatusBar_Measure.Size = new System.Drawing.Size(0, 38);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 99);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(203, 45);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Set Measure:";
+            // 
+            // TextBox_Measure
+            // 
+            this.TextBox_Measure.Location = new System.Drawing.Point(221, 99);
+            this.TextBox_Measure.Name = "TextBox_Measure";
+            this.TextBox_Measure.Size = new System.Drawing.Size(141, 50);
+            this.TextBox_Measure.TabIndex = 3;
+            this.TextBox_Measure.TextChanged += new System.EventHandler(this.TextBox_Measure_TextChanged);
+            // 
+            // Button_ChangeMeasure
+            // 
+            this.Button_ChangeMeasure.Location = new System.Drawing.Point(386, 90);
+            this.Button_ChangeMeasure.Name = "Button_ChangeMeasure";
+            this.Button_ChangeMeasure.Size = new System.Drawing.Size(90, 68);
+            this.Button_ChangeMeasure.TabIndex = 4;
+            this.Button_ChangeMeasure.Text = "Go";
+            this.Button_ChangeMeasure.UseVisualStyleBackColor = true;
+            this.Button_ChangeMeasure.Click += new System.EventHandler(this.Button_ChangeMeasure_Click);
+            // 
             // FormMain
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(18F, 45F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1248, 819);
+            this.Controls.Add(this.Button_ChangeMeasure);
+            this.Controls.Add(this.TextBox_Measure);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.MainMenu);
             this.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.MainMenu;
             this.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.MaximizeBox = false;
@@ -195,6 +245,7 @@
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormMain_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormMain_DragEnter);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyUp);
             this.MainMenu.ResumeLayout(false);
             this.MainMenu.PerformLayout();
             this.StatusBar.ResumeLayout(false);
@@ -222,6 +273,11 @@
         private System.Windows.Forms.ToolStripMenuItem MainMenu_Debug_SendOutput;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel StatusBar_FileName;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBar_Measure;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox TextBox_Measure;
+        private System.Windows.Forms.ToolStripMenuItem MainMenu_Debug_Break;
+        private System.Windows.Forms.Button Button_ChangeMeasure;
     }
 }
 

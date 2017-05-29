@@ -162,7 +162,8 @@ namespace Engine
                                     */
                                 engineMeasureElements[clock].Remove(lastNoteOrChordAtPosition);
                                 var chord = new Chord();
-                                chord.Add(ProcessNote(note));
+                                chord.Notes.Add((Note)lastNoteOrChordAtPosition);
+                                chord.Notes.Add(ProcessNote(note));
                                 engineMeasureElements[clock].Add(chord);
                                 clock = GetAdvancedClock(engineMeasureElements, nextMeasureElement, note, clock);
                             }
@@ -172,7 +173,7 @@ namespace Engine
                                     * We're probably continuing an existing Chord, and we're likely on our 3rd+ note.
                                     * Add to the chord.
                                     */
-                                ((Chord)lastNoteOrChordAtPosition).Add(ProcessNote(note));
+                                ((Chord)lastNoteOrChordAtPosition).Notes.Add(ProcessNote(note));
                                 clock = GetAdvancedClock(engineMeasureElements, nextMeasureElement, note, clock);
                             }
                         }
@@ -196,8 +197,57 @@ namespace Engine
                         {
                             engineMeasureElements[clock] = new List<MeasureElement>();
                         }
-                        engineMeasureElements[clock].Add(ProcessNote(note));
-                        clock = GetAdvancedClock(engineMeasureElements, nextMeasureElement, note, clock);
+                        var noteToAdd = ProcessNote(note);
+
+                        if (engineMeasureElements[clock].Exists(me => {
+                            return me.GetType() == typeof(Note) &&
+                            ((Note)me).Pitch.Alter == noteToAdd.Pitch.Alter &&
+                            ((Note)me).Pitch.Octave == noteToAdd.Pitch.Octave &&
+                            ((Note)me).Pitch.Step == noteToAdd.Pitch.Step;
+                        })) {
+                            // Already same note at this clock index, don't add it! Really weird musicxml quirk
+                            // But advance the clock I guess
+                            clock = GetAdvancedClock(engineMeasureElements, nextMeasureElement, note, clock);
+                        } else
+                        {
+                            /**
+                             * Sometimes, chords aren't explicitly specified, and there could be two notes starting at the same time that aren't marked as chords, but end up basically being chords anyways.
+                             * Turn these notes occurring at the same time into a Chord.
+                             */
+                            if (engineMeasureElements[clock].Exists(me =>
+                            {
+                                return me.GetType() == typeof(Note);
+                            }))
+                            {
+                                var lastNoteOrChordAtPosition = engineMeasureElements[clock].FindLast(engineMeasureElement => engineMeasureElement.GetType() == typeof(Note) || engineMeasureElement.GetType() == typeof(Chord));
+                                if (lastNoteOrChordAtPosition.GetType() == typeof(Note))
+                                {
+                                    /**
+                                        * We found the last note we're supposed to turn into a Chord!
+                                        * We're probably on the 2nd note of the Chord right now.
+                                        * Remove the first note and replace it with a formal Chord object.
+                                        */
+                                    engineMeasureElements[clock].Remove(lastNoteOrChordAtPosition);
+                                    var chord = new Chord();
+                                    chord.Notes.Add((Note)lastNoteOrChordAtPosition);
+                                    chord.Notes.Add(noteToAdd);
+                                    engineMeasureElements[clock].Add(chord);
+                                    clock = GetAdvancedClock(engineMeasureElements, nextMeasureElement, note, clock);
+                                }
+                                else if (lastNoteOrChordAtPosition.GetType() == typeof(Chord))
+                                {
+                                    /**
+                                        * We're probably continuing an existing Chord, and we're likely on our 3rd+ note.
+                                        * Add to the chord.
+                                        */
+                                    ((Chord)lastNoteOrChordAtPosition).Notes.Add(noteToAdd);
+                                    clock = GetAdvancedClock(engineMeasureElements, nextMeasureElement, note, clock);
+                                }
+                            } else {
+                                engineMeasureElements[clock].Add(noteToAdd);
+                                clock = GetAdvancedClock(engineMeasureElements, nextMeasureElement, note, clock);
+                            }
+                        }
                     }
                     else if (note.IsRest)
                     {
@@ -216,7 +266,7 @@ namespace Engine
                 }
             }
             List<MeasureElement> myMeasureElements = engineMeasureElements.Values.SelectMany(c => c).ToList();
-            engineMeasure.AddRange(myMeasureElements);
+            engineMeasure.Elements.AddRange(myMeasureElements);
             return engineMeasure;
         }
 
@@ -244,10 +294,14 @@ namespace Engine
 
         public int GetAdvancedClock(SortedDictionary<int, List<MeasureElement>> engineMeasureElements, MusicXml.Domain.MeasureElement nextMeasureElement, MusicXml.Domain.Note note, int currentClock)
         {
-            if (note.IsChord ||
-                (nextMeasureElement != null &&
+            /*
+             * Advance the clock if:
+             *   - This is a standard normal note (not part of a Chord)
+             *   - This is the last note of a Chord
+             */
+            if (nextMeasureElement != null &&
                  nextMeasureElement.Type == MusicXml.Domain.MeasureElementType.Note &&
-                ((MusicXml.Domain.Note)nextMeasureElement.Element).IsChord))
+                ((MusicXml.Domain.Note)nextMeasureElement.Element).IsChord)
             {
                 // If next note is chord, do not advance clock
                 return currentClock;
