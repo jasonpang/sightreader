@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Engine
+namespace Engine.Models
 {
     public class Song
     {

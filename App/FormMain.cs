@@ -124,7 +124,7 @@ namespace App
             var inputs = SightReader.GetMidiInputDevices();
             foreach (var input in inputs)
             {
-                if (input.Name == "E-MU XMidi1X1 Tab")
+                if (input.Name == "KAWAI USB MIDI")
                 {
                     SightReader.SetMidiInput(input);
                     break;
@@ -155,6 +155,43 @@ namespace App
         {
             var outputDevice = SightReader.Output;
 
+            PlayTestTripleSensor(outputDevice);
+        }
+
+        private void PlayTestTripleSensor(OutputDevice outputDevice)
+        {
+            int velocity = 65;
+            int sleep = 500;
+            int times = 3;
+            Task.Factory.StartNew(() =>
+            {
+                outputDevice.SilenceAllNotes();
+                outputDevice.SendControlChange(Channel.Channel1, Midi.Control.SustainPedal, 0);
+
+                PlayTestNote(outputDevice, velocity, 127/2, times, sleep);
+                //Thread.Sleep(1000);
+                //PlayTestNote(outputDevice, velocity, 127/2, times, sleep);
+                //Thread.Sleep(1000);
+                //PlayTestNote(outputDevice, velocity, 127, times, sleep);
+            });
+        }
+
+        private void PlayTestNote(OutputDevice device, int velocityOn, int velocityOff, int times, int duration)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                for (int i = 0; i < times; i++)
+                {
+                    device.SendNoteOn(Channel.Channel1, Midi.Pitch.C4, velocityOn);
+                    Thread.Sleep(duration);
+                    //device.SendNoteOff(Channel.Channel1, Midi.Pitch.C4, velocityOff);
+                    //Thread.Sleep(duration);
+                }
+            });
+        }
+
+        private void PlayPedaledScale(OutputDevice outputDevice)
+        {
             Task.Factory.StartNew(() =>
             {
                 outputDevice.SilenceAllNotes();

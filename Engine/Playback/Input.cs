@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace MusicXml.Domain
+namespace Engine
 {
-    public enum StartNoteType
+    public interface Input
     {
-        Upper,
-        Main,
-        Below
     }
 }
