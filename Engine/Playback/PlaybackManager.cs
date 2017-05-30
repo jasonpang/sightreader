@@ -9,7 +9,7 @@ namespace Engine.Playback
 {
     public class PlaybackManager
     {
-        public PlaybackManager(Song song)
+        public PlaybackManager(Score song)
         {
 
         }

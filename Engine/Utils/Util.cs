@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Engine.Models
+namespace Engine.Utils
 {
-    public class SongProcessInfo
+    class Util
     {
-        public int MaxStaves { get; set; }
     }
 }

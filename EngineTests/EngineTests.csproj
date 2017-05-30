@@ -46,9 +46,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SongBuilderTests.cs" />
+    <Compile Include="ScoreBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +62,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\MusicXml\header-missing.xml" />
+    <Content Include="Assets\MusicXml\header.xml" />
+    <Content Include="Assets\MusicXml\hello-world.xml" />
+    <Content Include="Assets\MusicXml\invalid.xml" />
     <Content Include="Assets\MusicXml\mozart-piano-sonata.xml" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

@@ -16,17 +16,10 @@ namespace Engine
 
         public OutputDevice Output { get; private set; }
 
-        public SightReaderMode Mode { get; private set; }
-
-        public InputProcessor InputProcessor { get; private set; }
-        public SongProcessor SongProcessor { get; private set; }
-
-        public Song Song { get; private set; }
+        public Score Song { get; private set; }
 
         public SightReader()
         {
-            InputProcessor = new InputProcessor(this);
-            SongProcessor = new SongProcessor(this);
         }
 
         public ReadOnlyCollection<InputDevice> GetMidiInputDevices()
@@ -46,9 +39,9 @@ namespace Engine
             Trace.WriteLine($"Setting new MIDI input '{device.Name}'.");
             Input = device;
             Trace.WriteLine($"Installing input event handlers.");
-            Input.NoteOn += InputProcessor.OnNoteOn;
-            Input.NoteOff += InputProcessor.OnNoteOff;
-            Input.ControlChange += InputProcessor.OnControlChange;
+            //Input.NoteOn += InputProcessor.OnNoteOn;
+           // Input.NoteOff += InputProcessor.OnNoteOff;
+            //Input.ControlChange += InputProcessor.OnControlChange;
             Trace.WriteLine($"Opening MIDI input.");
             Input.Open();
             Input.StartReceiving(null);
@@ -58,20 +51,7 @@ namespace Engine
 
         public void SetMeasure(int number)
         {
-            if (number > 0 && number <= Song.Parts.First().Staves.First().Measures.Count)
-            {
-                foreach (var part in Song.Parts)
-                {
-                    foreach (var stave in part.Staves)
-                    {
-                        stave.MeasureIndex = number - 1;
-                        foreach (var measure in stave.Measures)
-                        {
-                            measure.MeasureElementIndex = 0;
-                        }
-                    }
-                }
-            }
+
         }
 
         public void CloseMidiInput()
@@ -122,12 +102,6 @@ namespace Engine
             }
         }
 
-        public void SetMode(SightReaderMode mode)
-        {
-            Mode = mode;
-            ModeChanged?.Invoke(this, null);
-        }
-
         public event EventHandler MidiInputChanged;
         public event EventHandler MidiOutputChanged;
         public event EventHandler ModeChanged;
@@ -135,8 +109,6 @@ namespace Engine
 
         public void SetFile(string filePath)
         {
-            Song = SongProcessor.Process(filePath);
-            SetMode(SightReaderMode.Sightreading);
             SongChanged?.Invoke(this, null);
         }
 
