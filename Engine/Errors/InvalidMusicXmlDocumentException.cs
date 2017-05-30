@@ -9,8 +9,8 @@ namespace Engine.Errors
 {
     public class InvalidMusicXmlDocumentException : SightReaderException
     {
-        public InvalidMusicXmlDocumentException(XmlException innerException)
-            : base("There was an error parsing the XML document as MusicXML.", innerException)
+        public InvalidMusicXmlDocumentException(XmlException innerException = null, String error = "There was an error parsing the XML document as MusicXML.")
+            : base(error, innerException)
         {
         }
     }

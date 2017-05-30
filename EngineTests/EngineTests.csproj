@@ -62,6 +62,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\MusicXml\header-two-parts.xml" />
     <Content Include="Assets\MusicXml\header-missing.xml" />
     <Content Include="Assets\MusicXml\header.xml" />
     <Content Include="Assets\MusicXml\hello-world.xml" />

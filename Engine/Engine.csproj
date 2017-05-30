@@ -43,8 +43,10 @@
     <Compile Include="Builder\MusicXml.cs" />
     <Compile Include="Errors\InvalidMusicXmlDocumentException.cs" />
     <Compile Include="Errors\SightReaderException.cs" />
+    <Compile Include="Models\Measure.cs" />
     <Compile Include="Models\Score.cs" />
     <Compile Include="Models\ScoreInfo.cs" />
+    <Compile Include="Models\ScorePart.cs" />
     <Compile Include="Playback\Input.cs" />
     <Compile Include="Playback\Output.cs" />
     <Compile Include="Playback\PlaybackManager.cs" />

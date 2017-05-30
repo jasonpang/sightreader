@@ -12,10 +12,17 @@ namespace Engine.Models
     {
         public ScoreInfo Info { get; set; } = new ScoreInfo();
 
+        public IList<ScorePart> Parts { get; set; } = new List<ScorePart>();
+
         public static Score CreateFromMusicXml(Stream stream)
         {
             var builder = new ScoreBuilder(stream);
             return builder.BuildScore();
+        }
+
+        public override string ToString()
+        {
+            return $"Score ({Parts.Count} parts)";
         }
     }
 }

@@ -59,5 +59,19 @@ namespace EngineTests
             CollectionAssert.AreEquivalent(new string[] { }, scoreInfo.Creators.Values.ToArray());
             CollectionAssert.AreEquivalent(new string[] { }, scoreInfo.Credits.ToArray());
         }
+
+        [TestMethod]
+        public void GetScoreParts_TwoPartLists()
+        {
+            var builder = new ScoreBuilder(File.OpenRead(@"C:\Users\Jason\Downloads\xmlsamples\SchbAvMaSample.xml"));
+            var deserializedMusicXml = builder.DeserializeMusicXml(builder.MusicXmlDocumentStream);
+            var scoreParts = builder.GetScoreParts(deserializedMusicXml);
+        }
+
+        [TestMethod]
+        public void GetScorePartMeasures_OutOfOrder_MusicXml_Measures()
+        {
+            // TODO: Test out of order MusicXML measures
+        }
     }
 }

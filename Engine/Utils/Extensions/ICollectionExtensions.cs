@@ -11,9 +11,9 @@ namespace Engine.Utils.Extensions
         /// <summary>
         /// Like String.Join(), but ignores null or empty strings.
         /// </summary>
-        public static string JoinIgnoreNullOrEmpty<T>(this ICollection<T> collection)
+        public static string JoinIgnoreNullOrEmpty<T>(this ICollection<T> collection, string delimeter)
         {
-            return String.Join(" ", collection.Where(s => !String.IsNullOrEmpty(s?.ToString())));
+            return String.Join(delimeter, collection.Where(s => !String.IsNullOrEmpty(s?.ToString())));
         }
     }
 }
