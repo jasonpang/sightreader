@@ -39,8 +39,7 @@ namespace EngineTests
         public void GetScoreInfo_CompleteMusicXml()
         {
             var builder = new ScoreBuilder(File.OpenRead(@"Assets\MusicXml\header.xml"));
-            var deserializedMusicXml = builder.DeserializeMusicXml(builder.MusicXmlDocumentStream);
-            var scoreInfo = builder.GetScoreInfo(deserializedMusicXml);
+            var scoreInfo = builder.GetScoreInfo();
             Assert.AreEqual("work title work number", scoreInfo.Work);
             Assert.AreEqual("movement title movement number", scoreInfo.Movement);
             CollectionAssert.AreEquivalent(new string[] { "composer", "poet" }, scoreInfo.Creators.Keys.ToArray());
@@ -52,8 +51,7 @@ namespace EngineTests
         public void GetScoreInfo_MissingFields()
         {
             var builder = new ScoreBuilder(File.OpenRead(@"Assets\MusicXml\header-missing.xml"));
-            var deserializedMusicXml = builder.DeserializeMusicXml(builder.MusicXmlDocumentStream);
-            var scoreInfo = builder.GetScoreInfo(deserializedMusicXml);
+            var scoreInfo = builder.GetScoreInfo();
             Assert.AreEqual("work number", scoreInfo.Work);
             CollectionAssert.AreEquivalent(new string[] { }, scoreInfo.Creators.Keys.ToArray());
             CollectionAssert.AreEquivalent(new string[] { }, scoreInfo.Creators.Values.ToArray());
@@ -64,8 +62,7 @@ namespace EngineTests
         public void GetScoreParts_TwoPartLists()
         {
             var builder = new ScoreBuilder(File.OpenRead(@"C:\Users\Jason\Downloads\xmlsamples\SchbAvMaSample.xml"));
-            var deserializedMusicXml = builder.DeserializeMusicXml(builder.MusicXmlDocumentStream);
-            var scoreParts = builder.GetScoreParts(deserializedMusicXml);
+            var scoreParts = builder.GetScoreParts();
         }
 
         [TestMethod]
