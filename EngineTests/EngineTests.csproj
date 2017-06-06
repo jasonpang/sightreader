@@ -49,6 +49,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MeasureBuilderTests.cs" />
     <Compile Include="ScoreBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -65,8 +66,27 @@
     <Content Include="Assets\MusicXml\header-two-parts.xml" />
     <Content Include="Assets\MusicXml\header-missing.xml" />
     <Content Include="Assets\MusicXml\header.xml" />
+    <Content Include="Assets\MusicXml\measures-out-of-order.xml" />
     <Content Include="Assets\MusicXml\hello-world.xml" />
     <Content Include="Assets\MusicXml\invalid.xml" />
+    <Content Include="Assets\MusicXml\Measures\clock-chord-normal.xml" />
+    <Content Include="Assets\MusicXml\Measures\clock-chord-both.xml" />
+    <Content Include="Assets\MusicXml\Measures\forward-decimals.xml" />
+    <Content Include="Assets\MusicXml\Measures\backup-decimals.xml" />
+    <Content Include="Assets\MusicXml\Measures\forward.xml" />
+    <Content Include="Assets\MusicXml\Measures\backup.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-arpeggiate-up.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-arpeggiate-default.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-arpeggiate-down.xml" />
+    <Content Include="Assets\MusicXml\Measures\clock-chord-none.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-tied-start-stop.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-tied-stop.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-tied-start.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-rest.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-pitch.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-chord.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-grace.xml" />
+    <Content Include="Assets\MusicXml\Measures\note-duration-type-staff-voice.xml" />
     <Content Include="Assets\MusicXml\mozart-piano-sonata.xml" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

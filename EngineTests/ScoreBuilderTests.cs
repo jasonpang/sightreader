@@ -59,16 +59,26 @@ namespace EngineTests
         }
 
         [TestMethod]
-        public void GetScoreParts_TwoPartLists()
+        public void GetScorePartMeasures_OutOfOrder_MusicXml_Measures()
         {
-            var builder = new ScoreBuilder(File.OpenRead(@"C:\Users\Jason\Downloads\xmlsamples\SchbAvMaSample.xml"));
-            var scoreParts = builder.GetScoreParts();
+            var builder = new ScoreBuilder(File.OpenRead(@"Assets\MusicXml\measures-out-of-order.xml"));
+            var score = builder.BuildScore();
+            Assert.AreEqual(1, score.Parts.Count);
+            Assert.AreEqual(3, score.Parts[0].Measures.Count);
+            Assert.AreEqual(1, score.Parts[0].Measures[0].Elements.Count);
+            Assert.AreEqual(2, score.Parts[0].Measures[1].Elements.Count);
+            Assert.AreEqual(3, score.Parts[0].Measures[2].Elements.Count);
         }
 
         [TestMethod]
-        public void GetScorePartMeasures_OutOfOrder_MusicXml_Measures()
+        public void BuildScore_HelloWorld()
         {
-            // TODO: Test out of order MusicXML measures
+            var builder = new ScoreBuilder(File.OpenRead(@"Assets\MusicXml\hello-world.xml"));
+            var score = builder.BuildScore();
+            Assert.AreEqual(1, score.Parts.Count);
+            Assert.AreEqual(2, score.Parts[0].Measures.Count);
+            Assert.AreEqual(1, score.Parts[0].Measures[0].Elements.Count);
+            Assert.AreEqual(2, score.Parts[0].Measures[1].Elements.Count);
         }
     }
 }

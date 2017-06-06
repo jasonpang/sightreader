@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<measure number="1">
+  <backup>
+    <duration>1</duration>
+  </backup>
+  <backup>
+    <duration>2</duration>
+  </backup>
+  <backup>
+    <duration>3</duration>
+  </backup>
+  <backup>
+    <duration>4</duration>
+  </backup>
+  <backup>
+    <duration>5</duration>
+  </backup>
+</measure>

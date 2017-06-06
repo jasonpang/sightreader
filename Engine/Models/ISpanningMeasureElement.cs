@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Models
 {
-    public abstract class SpanningMeasureElement : IMeasureElement
+    public interface ISpanningMeasureElement : IMeasureElement
     {
-        public int Duration { get; set; }
+        int Duration { get; set; }
     }
 }

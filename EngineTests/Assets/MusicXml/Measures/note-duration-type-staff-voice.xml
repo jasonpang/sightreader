@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<measure number="1">
+  <note>
+    <pitch>
+      <alter>2</alter>
+      <step>D</step>
+      <octave>7</octave>
+    </pitch>
+    <duration>4</duration>
+    <type>whole</type>
+    <staff>1</staff>
+    <voice>3</voice>
+  </note>
+</measure>
