@@ -13,6 +13,12 @@
   <backup>
     <duration>1680</duration>
   </backup>
+  
+  
+  
+  
+  
+  
   <note>
     <pitch>
       <step>E</step>
@@ -42,6 +48,9 @@
       <slur type="start" number="2" placement="above" orientation="over"/>
     </notations>
   </note>
+  
+  
+  
   <note>
     <pitch>
       <step>E</step>
@@ -68,6 +77,8 @@
     <stem default-y="62.10">up</stem>
     <staff>1</staff>
   </note>
+  
+  
   <note>
     <pitch>
       <step>E</step>
@@ -94,6 +105,8 @@
     <stem default-y="62.10">up</stem>
     <staff>1</staff>
   </note>
+  
+  
   <note>
     <pitch>
       <step>E</step>
@@ -120,9 +133,21 @@
     <stem default-y="62.10">up</stem>
     <staff>1</staff>
   </note>
+  
+  
+  
+  
+  
+  
   <backup>
     <duration>18480</duration>
   </backup>
+  
+  
+  
+  
+  
+  
   <note>
     <pitch>
       <step>B</step>
@@ -135,6 +160,7 @@
     <staff>1</staff>
     <beam number="1">begin</beam>
   </note>
+  
   <note>
     <pitch>
       <step>G</step>
@@ -148,6 +174,7 @@
     <staff>1</staff>
     <beam number="1">end</beam>
   </note>
+  
   <note>
     <rest>
       <display-step>F</display-step>

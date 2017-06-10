@@ -261,9 +261,10 @@ namespace Engine.Builder
                 return 0;
             } else
             {
-                var sameStaveChordNotes = MeasureElements[Clock].Where(otherNote => ((Note)otherNote).Staff == note.Staff);
-                var longestNoteInSameStaveGroup = sameStaveChordNotes.OrderByDescending(otherNote => ((Note)otherNote).Duration).First();
-                return ((Note)longestNoteInSameStaveGroup).Duration;
+                //var sameStaveChordNotes = MeasureElements[Clock].Where(otherNote => ((Note)otherNote).Staff == note.Staff);
+                //var longestNoteInSameStaveGroup = sameStaveChordNotes.OrderByDescending(otherNote => ((Note)otherNote).Duration).First();
+                //return ((Note)longestNoteInSameStaveGroup).Duration;
+                return note.Duration;
             }
         }
 

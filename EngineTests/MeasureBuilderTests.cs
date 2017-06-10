@@ -210,7 +210,7 @@ namespace EngineTests
             var builder = new MeasureBuilder(File.OpenRead(@"Assets\MusicXml\Measures\clock-chord-normal.xml"));
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
-            Assert.AreEqual(7, builder.Clock);
+            Assert.AreEqual(4, builder.Clock);
             Assert.AreEqual(1, measure.Elements.Count);
             Assert.AreEqual(2, measure.Elements[0].GroupElements.Count);
         }
@@ -243,6 +243,40 @@ namespace EngineTests
         public void BuildMeasure_Clock_Complex()
         {
             var builder = new MeasureBuilder(File.OpenRead(@"Assets\MusicXml\Measures\clock-complex.xml"));
+            var measure = builder.BuildMeasure();
+            Assert.AreEqual(new Pitch("E", 0, 5), (measure.Elements[0].GroupElements[1] as Note).Pitch);
+            Assert.AreEqual(new Pitch("E", 0, 6), (measure.Elements[0].GroupElements[2] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("B", 0, 5), (measure.Elements[1].GroupElements[0] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("G", 1, 5), (measure.Elements[2].GroupElements[0] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("E", 0, 6), (measure.Elements[3].GroupElements[0] as Note).Pitch);
+            Assert.AreEqual(new Pitch("E", 0, 5), (measure.Elements[3].GroupElements[1] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("B", 0, 5), (measure.Elements[4].GroupElements[0] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("G", 1, 5), (measure.Elements[5].GroupElements[0] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("E", 0, 6), (measure.Elements[6].GroupElements[0] as Note).Pitch);
+            Assert.AreEqual(new Pitch("E", 0, 5), (measure.Elements[6].GroupElements[1] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("B", 0, 5), (measure.Elements[7].GroupElements[0] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("G", 1, 5), (measure.Elements[8].GroupElements[0] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("E", 0, 5), (measure.Elements[9].GroupElements[0] as Note).Pitch);
+            Assert.AreEqual(new Pitch("E", 0, 6), (measure.Elements[9].GroupElements[1] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("B", 0, 5), (measure.Elements[10].GroupElements[0] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("G", 1, 5), (measure.Elements[11].GroupElements[0] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("F", 1, 5), (measure.Elements[12].GroupElements[0] as Note).Pitch);
+            Assert.AreEqual(new Pitch("F", 1, 6), (measure.Elements[12].GroupElements[1] as Note).Pitch);
+
+            Assert.AreEqual(new Pitch("G", 1, 6), (measure.Elements[13].GroupElements[0] as Note).Pitch);
+            Assert.AreEqual(new Pitch("G", 1, 5), (measure.Elements[13].GroupElements[1] as Note).Pitch);
         }
     }
 }
