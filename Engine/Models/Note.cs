@@ -14,6 +14,7 @@ namespace Engine.Models
         /// This tracks which Chord notes are arpeggiated.
         /// </summary>
         public bool IsArpeggiatedUp { get; set; }
+
         public bool IsArpeggiatedDown { get; set; }
 
         public bool IsChordTone { get; set; }
@@ -26,6 +27,10 @@ namespace Engine.Models
 
         public bool IsTiedStop { get; set; }
 
+        public bool IsSlurStart { get; set; }
+
+        public bool IsSlurStop { get; set; }
+
         public Pitch Pitch { get; set; } = new Pitch();
 
         public int Duration { get; set; }
@@ -37,6 +42,15 @@ namespace Engine.Models
         public bool IsSilent { get; set; }
 
         public String Type { get; set; }
+
+        public bool IsPlayable(int onWhichStaff)
+        {
+            // It's playable if it's on our staff and isn't a silent note
+            return (!IsTiedStop &&
+                    Staff == onWhichStaff &&
+                    !IsRest &&
+                    !IsSilent);
+        }
 
         public static bool operator ==(Note a, Note b)
         {
@@ -97,6 +111,12 @@ namespace Engine.Models
         public static bool operator !=(Note a, Note b)
         {
             return !(a == b);
+        }
+
+        public override string ToString()
+        {
+            var midiNote = new Midi.Note(Pitch.Step[0], Pitch.Alter);
+            return IsRest ? "<Rest>" : $"Note <{midiNote.PitchInOctave(Pitch.Octave).ToString()}>";
         }
     }
 }

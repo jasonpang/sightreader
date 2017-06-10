@@ -9,28 +9,41 @@
     </score-part>
   </part-list>
   <part id="P1">
-    <measure number="3">
+    <measure number="1">
       <note>
         <pitch>
           <step>C</step>
-          <octave>3</octave>
+          <octave>4</octave>
         </pitch>
+        <duration>4</duration>
+        <type>quarter</type>
+        <notations>
+          <slur type="start"/>
+        </notations>
+        <staff>1</staff>
       </note>
     </measure>
     <measure number="2">
       <note>
         <pitch>
           <step>C</step>
-          <octave>2</octave>
+          <octave>4</octave>
         </pitch>
+        <duration>4</duration>
+        <type>whole</type>
+        <notations>
+          <slur type="stop"/>
+        </notations>
+        <staff>1</staff>
       </note>
-    </measure>
-    <measure number="1">
       <note>
         <pitch>
-          <step>C</step>
-          <octave>1</octave>
+          <step>D</step>
+          <octave>3</octave>
         </pitch>
+        <duration>4</duration>
+        <type>whole</type>
+        <staff>1</staff>
       </note>
     </measure>
   </part>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<measure number="1" width="314">
+  <note>
+    <pitch>
+      <step>C</step>
+      <alter>1</alter>
+      <octave>4</octave>
+    </pitch>
+    <duration>3360</duration>
+    <voice>4</voice>
+    <type>eighth</type>
+    <stem default-y="-9.75">up</stem>
+    <staff>2</staff>
+    <beam number="1">begin</beam>
+  </note>
+  <backup>
+    <duration>3360</duration>
+  </backup>
+  <note>
+    <pitch>
+      <step>E</step>
+      <octave>5</octave>
+    </pitch>
+    <duration>5040</duration>
+    <voice>1</voice>
+    <type>eighth</type>
+    <dot/>
+    <stem default-y="-38.55">down</stem>
+    <staff>1</staff>
+    <beam number="1">begin</beam>
+  </note>
+  <note>
+    <chord/>
+    <pitch>
+      <step>G</step>
+      <alter>1</alter>
+      <octave>5</octave>
+    </pitch>
+    <duration>5040</duration>
+    <voice>1</voice>
+    <type>eighth</type>
+    <dot/>
+    <stem default-y="-38.55">down</stem>
+    <staff>1</staff>
+    <notations>
+      <slur type="start" number="1" placement="above" orientation="over"/>
+      <articulations>
+        <accent placement="above" relative-x="-0.84" relative-y="5.05"/>
+      </articulations>
+    </notations>
+  </note>
+</measure>

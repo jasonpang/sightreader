@@ -45,7 +45,7 @@ namespace App
             try
             {
                 var number = Convert.ToInt32(TextBox_Measure.Text);
-                SightReader.SetMeasure(number);
+                SightReader.SetMeasure(Math.Max(0, number - 1));
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace App
         private void SightReader_MidiInputChanged(object sender, EventArgs e)
         {
             StatusBar_Input.Text = SightReader.Input.Name;
-            //SightReader.Input.NoteOn += Input_NoteOn;
+            SightReader.Input.NoteOn += Input_NoteOn;
         }
 
         private void SightReader_MidiOutputChanged(object sender, EventArgs e)
@@ -66,21 +66,21 @@ namespace App
 
         private void SightReader_ModeChanged(object sender, EventArgs e)
         {
-            //StatusBar_Mode.Text = SightReader.Mode.ToString();
+            StatusBar_Mode.Text = SightReader.Mode.ToString();
         }
 
         private void SightReader_SongChanged(object sender, EventArgs e)
         {
-            //StatusBar_FileName.Text = Path.GetFileName(SightReader.Song.FilePath);
+            StatusBar_FileName.Text = Path.GetFileName(SightReader.FilePath);
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            //SightReader.SetMode(SightReaderMode.Passthrough);
             PopulateMidiInputOutputs();
             PopulateModes();
             ChooseDefaultMidiInputOutput();
             LoadDefaultMidiFile();
+            SightReader.SetMode(SightReaderMode.Sightreading);
         }
 
         private void PopulateMidiInputOutputs()
@@ -101,11 +101,11 @@ namespace App
 
         private void PopulateModes()
         {
-            //foreach (SightReaderMode mode in Enum.GetValues(typeof(SightReaderMode)))
-            //{
-                //var toolStripItem = new ToolStripMenuItem(mode.ToString(), null, (s, e) => { SightReader.SetMode(mode); });
-                //MainMenu_Program_Mode.DropDownItems.Add(toolStripItem);
-//            }
+            foreach (SightReaderMode mode in Enum.GetValues(typeof(SightReaderMode)))
+            {
+                var toolStripItem = new ToolStripMenuItem(mode.ToString(), null, (s, e) => { SightReader.SetMode(mode); });
+                MainMenu_Program_Mode.DropDownItems.Add(toolStripItem);
+            }
         }
 
         private void ChooseDefaultMidiInputOutput()
@@ -228,10 +228,7 @@ namespace App
         {
             if (e.KeyCode == Keys.Home)
             {
-                //foreach (var stave in SightReader.Song.Parts[0].Staves)
-                //{
-                    //stave.MeasureIndex = 0;
-                //}
+                SightReader.PlaybackManager.Reset();
             }
         }
 

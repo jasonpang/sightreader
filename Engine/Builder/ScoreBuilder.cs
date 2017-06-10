@@ -46,7 +46,13 @@ namespace Engine.Builder
             var score = new Score();
             score.Info = GetScoreInfo();
             score.Parts = GetScoreParts();
+            FixSameSlursToTies(score);
             return score;
+        }
+
+        public void FixSameSlursToTies(Score score)
+        {
+
         }
 
         public ScoreInfo GetScoreInfo()

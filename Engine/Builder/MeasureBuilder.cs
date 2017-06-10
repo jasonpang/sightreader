@@ -55,22 +55,23 @@ namespace Engine.Builder
         {
             var measure = new Measure();
             ProcessRawMeasureElements();
-            measure.Elements = MeasureElements.Values.SelectMany(x => x).ToList();
+            measure.Elements = MeasureElements.Values.Select(elements => new ElementGroup(elements)).ToList();
             return measure;
         }
 
         public void ProcessRawMeasureElements()
         {
-            for (var i = 0; i < RawMeasure.Items.Length; i++)
+            for (var RawElementIndex = 0; RawElementIndex < RawMeasure.Items.Length; RawElementIndex++)
             {
-                var element = RawMeasure.Items[i];
+                var element = RawMeasure.Items[RawElementIndex];
                 /*
                  * Some operations, like whether to advance the clock by a note's duration, require peeking ahead one element.
                  */
-                var nextNoteElement = (
-                    i + 1 < RawMeasure.Items.Length &&
-                    RawMeasure.Items[i].GetType() == (typeof(note))
-                    ) ? RawMeasure.Items[i] : null;
+                object nextNoteElement = null;
+                if (RawElementIndex + 1 < RawMeasure.Items.Length)
+                {
+                    nextNoteElement = RawMeasure.Items.Skip(RawElementIndex + 1).FirstOrDefault(rawMeasureItem => rawMeasureItem.GetType() == (typeof(note)));
+                }
 
                 if (ProcessOnly.Count > 0 && !ProcessOnly.Contains(element.GetType()))
                 {
@@ -114,12 +115,26 @@ namespace Engine.Builder
             var note = BuildMeasureElement_Note_Process(element);
             var nextNote = BuildMeasureElement_Note_Process(nextNoteElement);
 
-            AddNote(Clock, note);
-
-            if (!BuildMeasureElement_Note_ShouldNotAdvanceClock(note, nextNote))
+            if (IsIdenticalNoteBacktrack(note))
             {
+                // Move clock forward by duplicated not duration, but don't actually add the note
                 Clock += note.Duration;
             }
+            else
+            {
+                AddNote(Clock, note);
+                Clock += BuildMeasureElement_Note_GetDurationToAdvance(note, nextNote);
+            }
+        }
+
+        private bool IsIdenticalNoteBacktrack(Note note)
+        {
+            if (MeasureElements.Count == 0 || !MeasureElements.ContainsKey(Clock))
+            {
+                return false;
+            }
+            var identicalPitch = MeasureElements[Clock].FirstOrDefault(otherNote => ((Note)otherNote).Pitch == note.Pitch);
+            return (identicalPitch != null);
         }
 
         private void AddNote(int clockTime, Note note)
@@ -193,7 +208,7 @@ namespace Engine.Builder
             for (int notationIndex = 0; element.notations != null && notationIndex < element.notations.Length; notationIndex++)
             {
                 var untypedNotation = element.notations[notationIndex];
-                for (int subNotationIndex = 0; subNotationIndex < untypedNotation.Items.Length; subNotationIndex++)
+                for (int subNotationIndex = 0; untypedNotation.Items != null && subNotationIndex < untypedNotation.Items.Length; subNotationIndex++)
                 {
                     var subNotation = untypedNotation.Items[subNotationIndex];
                     if (subNotation.GetType() == typeof(arpeggiate))
@@ -218,18 +233,38 @@ namespace Engine.Builder
                             note.IsArpeggiatedUp = true;
                         }
                     }
+                    else if (subNotation.GetType() == typeof(slur))
+                    {
+                        var slur = (slur)subNotation;
+                        if (slur.type == startstopcontinue.start)
+                        {
+                            note.IsSlurStart = true;
+                        }
+                        if (slur.type == startstopcontinue.stop)
+                        {
+                            note.IsSlurStop = true;
+                        }
+                    }
                 }
             }
             return note;
         }
 
-        public bool BuildMeasureElement_Note_ShouldNotAdvanceClock(Note note, Note nextNote)
+        public int BuildMeasureElement_Note_GetDurationToAdvance(Note note, Note nextNote)
         {
-            return (
-                note.IsChordTone ||
+            var shouldNotAdvanceClock = (
                 (nextNote != null && nextNote.IsChordTone) ||
                 note.IsGrace
                 );
+            if (shouldNotAdvanceClock)
+            {
+                return 0;
+            } else
+            {
+                var sameStaveChordNotes = MeasureElements[Clock].Where(otherNote => ((Note)otherNote).Staff == note.Staff);
+                var longestNoteInSameStaveGroup = sameStaveChordNotes.OrderByDescending(otherNote => ((Note)otherNote).Duration).First();
+                return ((Note)longestNoteInSameStaveGroup).Duration;
+            }
         }
 
         public void BuildMeasureElement_Note_Chord(Note note, note element)

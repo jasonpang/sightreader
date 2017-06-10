@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public interface Input
+    public interface IInput
     {
     }
 }

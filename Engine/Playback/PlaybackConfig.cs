@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Engine.Playback
 {
-    public interface Output
+    public class PlaybackConfig
     {
+        public IList<PlayerVoiceMapping> PlayerVoiceMappings { get; set; } = new List<PlayerVoiceMapping>();
+
     }
 }

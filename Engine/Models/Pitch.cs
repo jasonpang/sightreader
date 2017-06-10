@@ -12,6 +12,18 @@ namespace Engine.Models
         public int Octave { get; set; }
         public string Step { get; set; }
 
+        public Pitch()
+        {
+            Step = "";
+        }
+
+        public Pitch(string step, int alter, int octave)
+        {
+            Step = step;
+            Alter = alter;
+            Octave = octave;
+        }
+
         public static bool operator ==(Pitch a, Pitch b)
         {
             if (ReferenceEquals(a, b))
@@ -50,6 +62,12 @@ namespace Engine.Models
         public static bool operator !=(Pitch a, Pitch b)
         {
             return !(a == b);
+        }
+
+        public override string ToString()
+        {
+            var midiNote = new Midi.Note(Step[0], Alter);
+            return $"Pitch <{midiNote.PitchInOctave(Octave).ToString()}>";
         }
     }
 }

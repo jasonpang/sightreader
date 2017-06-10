@@ -8,7 +8,7 @@ namespace Engine.Models
 {
     public class Measure
     {
-        public IList<IMeasureElement> Elements { get; set; } = new List<IMeasureElement>();
+        public IList<ElementGroup> Elements { get; set; } = new List<ElementGroup>();
 
         public override string ToString()
         {

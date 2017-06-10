@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<measure number="1">
+  <note>
+    <pitch>
+      <step>A</step>
+      <octave>3</octave>
+    </pitch>
+    <duration>6720</duration>
+    <voice>5</voice>
+    <type>quarter</type>
+    <stem default-y="-81.15">down</stem>
+    <staff>2</staff>
+  </note>
+  <backup>
+    <duration>6720</duration>
+  </backup>
+  <note>
+    <pitch>
+      <step>A</step>
+      <octave>3</octave>
+    </pitch>
+    <duration>3360</duration>
+    <voice>4</voice>
+    <type>eighth</type>
+    <accidental>natural</accidental>
+    <stem default-y="-19.75">up</stem>
+    <staff>2</staff>
+    <beam number="1">begin</beam>
+  </note>
+</measure>

@@ -1,9 +1,12 @@
-﻿using Engine.Models;
+﻿using Engine.Builder;
+using Engine.Models;
+using Engine.Playback;
 using Midi;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +19,13 @@ namespace Engine
 
         public OutputDevice Output { get; private set; }
 
-        public Score Song { get; private set; }
+        public SightReaderMode Mode { get; private set; }
+
+        public string FilePath { get; set; }
+
+        public ScoreBuilder ScoreBuilder { get; set; }
+
+        public PlaybackManager PlaybackManager { get; set; }
 
         public SightReader()
         {
@@ -39,9 +48,6 @@ namespace Engine
             Trace.WriteLine($"Setting new MIDI input '{device.Name}'.");
             Input = device;
             Trace.WriteLine($"Installing input event handlers.");
-            //Input.NoteOn += InputProcessor.OnNoteOn;
-           // Input.NoteOff += InputProcessor.OnNoteOff;
-            //Input.ControlChange += InputProcessor.OnControlChange;
             Trace.WriteLine($"Opening MIDI input.");
             Input.Open();
             Input.StartReceiving(null);
@@ -51,7 +57,10 @@ namespace Engine
 
         public void SetMeasure(int number)
         {
-
+            PlaybackManager.SetMeasureIndex(0, number);
+            PlaybackManager.SetMeasureIndex(1, number);
+            PlaybackManager.SetGroupElementIndex(0, 0);
+            PlaybackManager.SetGroupElementIndex(1, 0);
         }
 
         public void CloseMidiInput()
@@ -102,6 +111,25 @@ namespace Engine
             }
         }
 
+        public void SetMode(SightReaderMode mode)
+        {
+            Mode = mode;
+            if (FilePath != null && Mode == SightReaderMode.Sightreading)
+            {
+                ScoreBuilder = new ScoreBuilder(new FileStream(FilePath, FileMode.Open));
+                var score = ScoreBuilder.BuildScore();
+                PlaybackManager = new PlaybackManager(this, score);
+            } else
+            {
+                PlaybackManager = new PlaybackManager(this, null);
+            }
+            Input.RemoveAllEventHandlers();
+            Input.NoteOn += PlaybackManager.OnNoteOn;
+            Input.NoteOff += PlaybackManager.OnNoteOff;
+            Input.ControlChange += PlaybackManager.OnControlChange;
+            ModeChanged?.Invoke(this, null);
+        }
+
         public event EventHandler MidiInputChanged;
         public event EventHandler MidiOutputChanged;
         public event EventHandler ModeChanged;
@@ -109,6 +137,7 @@ namespace Engine
 
         public void SetFile(string filePath)
         {
+            FilePath = filePath;
             SongChanged?.Invoke(this, null);
         }
 

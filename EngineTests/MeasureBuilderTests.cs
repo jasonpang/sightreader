@@ -58,8 +58,8 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(measure.Elements.Count, 1);
-            Assert.AreEqual(measure.Elements.First().GetType(), typeof(Note));
-            var note = measure.Elements.First() as Note;
+            Assert.AreEqual(measure.Elements.First().GetType(), typeof(ElementGroup));
+            var note = measure.Elements.First().GroupElements.First() as Note;
             Assert.AreEqual(note.Pitch.Alter, 1);
             Assert.AreEqual(note.Pitch.Step, "C");
             Assert.AreEqual(note.Pitch.Octave, 4);
@@ -72,8 +72,8 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(measure.Elements.Count, 1);
-            Assert.AreEqual(measure.Elements.First().GetType(), typeof(Note));
-            var note = measure.Elements.First() as Note;
+            Assert.AreEqual(measure.Elements.First().GetType(), typeof(ElementGroup));
+            var note = measure.Elements.First().GroupElements.First() as Note;
             Assert.AreEqual(4, note.Duration);
             Assert.AreEqual("whole", note.Type);
             Assert.AreEqual(1, note.Staff);
@@ -86,11 +86,12 @@ namespace EngineTests
             var builder = new MeasureBuilder(File.OpenRead(@"Assets\MusicXml\Measures\note-chord.xml"));
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
-            Assert.AreEqual(measure.Elements.Count, 4);
-            Assert.AreEqual(((Note)(measure.Elements[0])).IsChordTone, false);
-            Assert.AreEqual(((Note)(measure.Elements[1])).IsChordTone, true);
-            Assert.AreEqual(((Note)(measure.Elements[2])).IsChordTone, true);
-            Assert.AreEqual(((Note)(measure.Elements[3])).IsChordTone, false);
+            // 4 notes, 1 at clock time 0, 3 at clock time 4, for a total of 2 ElementGroup items
+            Assert.AreEqual(2, measure.Elements.Count);
+            Assert.AreEqual(((Note)(measure.Elements[0].GroupElements[0])).IsChordTone, false);
+            Assert.AreEqual(((Note)(measure.Elements[0].GroupElements[1])).IsChordTone, true);
+            Assert.AreEqual(((Note)(measure.Elements[0].GroupElements[2])).IsChordTone, true);
+            Assert.AreEqual(((Note)(measure.Elements[1].GroupElements[0])).IsChordTone, false);
         }
 
         [TestMethod]
@@ -100,7 +101,7 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(measure.Elements.Count, 1);
-            Assert.AreEqual(((Note)(measure.Elements[0])).IsRest, true);
+            Assert.AreEqual(((Note)(measure.Elements[0].GroupElements[0])).IsRest, true);
         }
 
         [TestMethod]
@@ -110,7 +111,7 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(1, measure.Elements.Count);
-            Assert.AreEqual(true, ((Note)(measure.Elements[0])).IsGrace);
+            Assert.AreEqual(true, ((Note)(measure.Elements[0].GroupElements[0])).IsGrace);
         }
 
         [TestMethod]
@@ -120,7 +121,7 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(1, measure.Elements.Count);
-            Assert.AreEqual(true, ((Note)(measure.Elements[0])).IsTiedStart);
+            Assert.AreEqual(true, ((Note)(measure.Elements[0].GroupElements[0])).IsTiedStart);
         }
 
         [TestMethod]
@@ -130,7 +131,7 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(1, measure.Elements.Count);
-            Assert.AreEqual(true, ((Note)(measure.Elements[0])).IsTiedStop);
+            Assert.AreEqual(true, ((Note)(measure.Elements[0].GroupElements[0])).IsTiedStop);
         }
 
         [TestMethod]
@@ -140,8 +141,8 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(1, measure.Elements.Count);
-            Assert.AreEqual(true, ((Note)(measure.Elements[0])).IsTiedStart);
-            Assert.AreEqual(true, ((Note)(measure.Elements[0])).IsTiedStop);
+            Assert.AreEqual(true, ((Note)(measure.Elements[0].GroupElements[0])).IsTiedStart);
+            Assert.AreEqual(true, ((Note)(measure.Elements[0].GroupElements[0])).IsTiedStop);
         }
 
         [TestMethod]
@@ -151,8 +152,8 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(measure.Elements.Count, 1);
-            Assert.AreEqual(measure.Elements.First().GetType(), typeof(Note));
-            var note = measure.Elements.First() as Note;
+            Assert.AreEqual(measure.Elements.First().GetType(), typeof(ElementGroup));
+            var note = measure.Elements.First().GroupElements.First() as Note;
             Assert.AreEqual(note.IsArpeggiatedUp, true);
             Assert.AreEqual(note.IsArpeggiatedDown, false);
         }
@@ -164,8 +165,8 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(measure.Elements.Count, 1);
-            Assert.AreEqual(measure.Elements.First().GetType(), typeof(Note));
-            var note = measure.Elements.First() as Note;
+            Assert.AreEqual(measure.Elements.First().GetType(), typeof(ElementGroup));
+            var note = measure.Elements.First().GroupElements.First() as Note;
             Assert.AreEqual(note.IsArpeggiatedUp, true);
             Assert.AreEqual(note.IsArpeggiatedDown, false);
         }
@@ -177,8 +178,8 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(measure.Elements.Count, 1);
-            Assert.AreEqual(measure.Elements.First().GetType(), typeof(Note));
-            var note = measure.Elements.First() as Note;
+            Assert.AreEqual(measure.Elements.First().GetType(), typeof(ElementGroup));
+            var note = measure.Elements.First().GroupElements.First() as Note;
             Assert.AreEqual(note.IsArpeggiatedUp, false);
             Assert.AreEqual(note.IsArpeggiatedDown, true);
         }
@@ -198,7 +199,9 @@ namespace EngineTests
             var builder = new MeasureBuilder(File.OpenRead(@"Assets\MusicXml\Measures\clock-chord-one.xml"));
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
-            Assert.AreEqual(0, builder.Clock);
+            Assert.AreEqual(1, measure.Elements.Count);
+            Assert.AreEqual(2, measure.Elements[0].GroupElements.Count);
+            Assert.AreEqual(4, builder.Clock);
         }
 
         [TestMethod]
@@ -208,6 +211,38 @@ namespace EngineTests
             builder.ProcessOnly.Add(typeof(note));
             var measure = builder.BuildMeasure();
             Assert.AreEqual(7, builder.Clock);
+            Assert.AreEqual(1, measure.Elements.Count);
+            Assert.AreEqual(2, measure.Elements[0].GroupElements.Count);
+        }
+
+        [TestMethod]
+        public void BuildMeasure_TwoStave_Chord()
+        {
+            var builder = new MeasureBuilder(File.OpenRead(@"Assets\MusicXml\Measures\two-stave-chord.xml"));
+            var measure = builder.BuildMeasure();
+            Assert.AreEqual(1, measure.Elements.Count);
+            Assert.AreEqual(3, measure.Elements[0].GroupElements.Count);
+            Assert.AreEqual(new Pitch("C", 1, 4), (measure.Elements[0].GroupElements[0] as Note).Pitch);
+            Assert.AreEqual(new Pitch("E", 0, 5), (measure.Elements[0].GroupElements[1] as Note).Pitch);
+            Assert.AreEqual(new Pitch("G", 1, 5), (measure.Elements[0].GroupElements[2] as Note).Pitch);
+        }
+
+        [TestMethod]
+        public void BuildMeasure_IdenticalNoteBacktrack()
+        {
+            var builder = new MeasureBuilder(File.OpenRead(@"Assets\MusicXml\Measures\identical-note-backtrack.xml"));
+            var measure = builder.BuildMeasure();
+            Assert.AreEqual(1, measure.Elements.Count);
+            Assert.AreEqual(1, measure.Elements[0].GroupElements.Count);
+            Assert.AreEqual(new Pitch("A", 0, 3), (measure.Elements[0].GroupElements[0] as Note).Pitch);
+            Assert.AreEqual(6720, (measure.Elements[0].GroupElements[0] as Note).Duration);
+            Assert.AreEqual(3360, builder.Clock);
+        }
+
+        [TestMethod]
+        public void BuildMeasure_Clock_Complex()
+        {
+            var builder = new MeasureBuilder(File.OpenRead(@"Assets\MusicXml\Measures\clock-complex.xml"));
         }
     }
 }
