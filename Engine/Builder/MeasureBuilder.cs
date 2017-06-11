@@ -115,26 +115,28 @@ namespace Engine.Builder
             var note = BuildMeasureElement_Note_Process(element);
             var nextNote = BuildMeasureElement_Note_Process(nextNoteElement);
 
-            if (IsIdenticalNoteBacktrack(note))
+            var previousIdenticalNote = GetIdenticalNoteBacktrack(note);
+            if (previousIdenticalNote != null)
             {
-                // Move clock forward by duplicated not duration, but don't actually add the note
-                Clock += note.Duration;
+                // Remove previous backtracked note
+                MeasureElements[Clock].Remove(previousIdenticalNote);
+                if (MeasureElements[Clock].Count == 0)
+                {
+                    MeasureElements.Remove(Clock);
+                }
             }
-            else
-            {
-                AddNote(Clock, note);
-                Clock += BuildMeasureElement_Note_GetDurationToAdvance(note, nextNote);
-            }
+            AddNote(Clock, note);
+            Clock += BuildMeasureElement_Note_GetDurationToAdvance(note, nextNote);
         }
 
-        private bool IsIdenticalNoteBacktrack(Note note)
+        private Note GetIdenticalNoteBacktrack(Note note)
         {
             if (MeasureElements.Count == 0 || !MeasureElements.ContainsKey(Clock))
             {
-                return false;
+                return null;
             }
             var identicalPitch = MeasureElements[Clock].FirstOrDefault(otherNote => ((Note)otherNote).Pitch == note.Pitch);
-            return (identicalPitch != null);
+            return (Note)identicalPitch;
         }
 
         private void AddNote(int clockTime, Note note)

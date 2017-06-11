@@ -72,6 +72,7 @@
     <Content Include="Assets\MusicXml\header-missing.xml" />
     <Content Include="Assets\MusicXml\header.xml" />
     <Content Include="Assets\MusicXml\Measures\clock-complex.xml" />
+    <Content Include="Assets\MusicXml\Measures\identical-note-backtrack-2.xml" />
     <Content Include="Assets\MusicXml\tied-slur-previous-measure.xml" />
     <Content Include="Assets\MusicXml\tied-slur-same-measure.xml" />
     <Content Include="Assets\MusicXml\Measures\clock-chord-one.xml" />

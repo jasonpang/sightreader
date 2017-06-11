@@ -235,7 +235,20 @@ namespace EngineTests
             Assert.AreEqual(1, measure.Elements.Count);
             Assert.AreEqual(1, measure.Elements[0].GroupElements.Count);
             Assert.AreEqual(new Pitch("A", 0, 3), (measure.Elements[0].GroupElements[0] as Note).Pitch);
-            Assert.AreEqual(6720, (measure.Elements[0].GroupElements[0] as Note).Duration);
+            Assert.AreEqual(3360, (measure.Elements[0].GroupElements[0] as Note).Duration);
+            Assert.AreEqual(3360, builder.Clock);
+        }
+
+        [TestMethod]
+        public void BuildMeasure_IdenticalNoteBacktrack2()
+        {
+            var builder = new MeasureBuilder(File.OpenRead(@"Assets\MusicXml\Measures\identical-note-backtrack-2.xml"));
+            var measure = builder.BuildMeasure();
+            Assert.AreEqual(1, measure.Elements.Count);
+            Assert.AreEqual(2, measure.Elements[0].GroupElements.Count);
+            Assert.AreEqual(new Pitch("B", 0, 1), (measure.Elements[0].GroupElements[0] as Note).Pitch);
+            Assert.AreEqual(new Pitch("B", 0, 2), (measure.Elements[0].GroupElements[1] as Note).Pitch);
+            Assert.AreEqual(3360, (measure.Elements[0].GroupElements[0] as Note).Duration);
             Assert.AreEqual(3360, builder.Clock);
         }
 
