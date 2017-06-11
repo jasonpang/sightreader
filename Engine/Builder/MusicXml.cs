@@ -17176,24 +17176,11 @@ namespace Engine.Builder.MusicXml {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class rest {
         
-        private step displaystepField;
-        
         private string displayoctaveField;
         
         private yesno measureField;
         
         private bool measureFieldSpecified;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("display-step")]
-        public step displaystep {
-            get {
-                return this.displaystepField;
-            }
-            set {
-                this.displaystepField = value;
-            }
-        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("display-octave", DataType="integer")]

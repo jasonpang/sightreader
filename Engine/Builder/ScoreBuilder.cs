@@ -30,6 +30,10 @@ namespace Engine.Builder
         public static scorepartwise DeserializeMusicXml(Stream stream)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(scorepartwise));
+            serializer.UnknownAttribute += Serializer_UnknownAttribute;
+            serializer.UnknownElement += Serializer_UnknownElement;
+            serializer.UnknownNode += Serializer_UnknownNode;
+            serializer.UnreferencedObject += Serializer_UnreferencedObject;
             try
             {
                 scorepartwise score = (scorepartwise)serializer.Deserialize(stream);
@@ -39,6 +43,26 @@ namespace Engine.Builder
             {
                 throw new InvalidMusicXmlDocumentException(ex.InnerException as XmlException);
             }
+        }
+
+        private static void Serializer_UnreferencedObject(object sender, UnreferencedObjectEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private static void Serializer_UnknownNode(object sender, XmlNodeEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private static void Serializer_UnknownElement(object sender, XmlElementEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private static void Serializer_UnknownAttribute(object sender, XmlAttributeEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
 
         public Score BuildScore()

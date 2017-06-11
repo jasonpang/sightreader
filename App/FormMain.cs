@@ -132,7 +132,8 @@ namespace App
 
         private void LoadDefaultMidiFile()
         {
-            SightReader.SetFile(@"C:\Users\Jason\Documents\OCR Sheet Music Converted\No_Game_No_Life_-_This_Game_-_Piano.xml");
+            //SightReader.SetFile(@"C:\Users\Jason\Documents\OCR Sheet Music Converted\No_Game_No_Life_-_This_Game_-_Piano.xml");
+            SightReader.SetFile(@"C:\Users\Jason\Downloads\Interstellar_-_First_Step (1)\lg-166842060.xml");            
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)

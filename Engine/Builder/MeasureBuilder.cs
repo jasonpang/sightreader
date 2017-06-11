@@ -61,7 +61,7 @@ namespace Engine.Builder
 
         public void ProcessRawMeasureElements()
         {
-            for (var RawElementIndex = 0; RawElementIndex < RawMeasure.Items.Length; RawElementIndex++)
+            for (var RawElementIndex = 0; RawMeasure.Items != null && RawElementIndex < RawMeasure.Items.Length; RawElementIndex++)
             {
                 var element = RawMeasure.Items[RawElementIndex];
                 /*
@@ -255,8 +255,7 @@ namespace Engine.Builder
         public int BuildMeasureElement_Note_GetDurationToAdvance(Note note, Note nextNote)
         {
             var shouldNotAdvanceClock = (
-                (nextNote != null && nextNote.IsChordTone) ||
-                note.IsGrace
+                (nextNote != null && nextNote.IsChordTone)
                 );
             if (shouldNotAdvanceClock)
             {
@@ -292,6 +291,7 @@ namespace Engine.Builder
         public void BuildMeasureElement_Note_Grace(Note note, note element, grace grace)
         {
             note.IsGrace = true;
+            note.Duration = 37; // prime number
         }
 
         public void BuildMeasureElement_Note_Pitch(Note note, note element, pitch pitch)
