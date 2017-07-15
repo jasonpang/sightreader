@@ -79,8 +79,10 @@ namespace App
             PopulateMidiInputOutputs();
             PopulateModes();
             ChooseDefaultMidiInputOutput();
-            LoadDefaultMidiFile();
-            SightReader.SetMode(SightReaderMode.Sightreading);
+            if (SightReader.Input != null)
+            {
+                SightReader.SetMode(SightReaderMode.Passthrough);
+            }
         }
 
         private void PopulateMidiInputOutputs()

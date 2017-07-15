@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Engine</RootNamespace>
     <AssemblyName>Engine</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,10 +72,9 @@
     <Compile Include="Utils\Extensions\ICollectionExtensions.cs" />
     <Compile Include="Utils\Util.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Midi\Midi.csproj">
-      <Project>{F60D8B7B-2D2E-4B94-A736-3783FFE1A25C}</Project>
+      <Project>{f60d8b7b-2d2e-4b94-a736-3783ffe1a25c}</Project>
       <Name>Midi</Name>
     </ProjectReference>
   </ItemGroup>
