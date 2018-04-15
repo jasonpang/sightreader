@@ -139,6 +139,8 @@ namespace Engine
         {
             FilePath = filePath;
             SongChanged?.Invoke(this, null);
+            SetMode(SightReaderMode.Passthrough);
+            SetMode(SightReaderMode.Sightreading);
         }
 
         public void Dispose()
