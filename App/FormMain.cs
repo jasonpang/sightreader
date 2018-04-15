@@ -113,7 +113,7 @@ namespace App
             var inputs = SightReader.GetMidiInputDevices();
             foreach (var input in inputs)
             {
-                if (input.Name == "KAWAI USB MIDI")
+                if (input.Name.EndsWith("KAWAI USB MIDI"))
                 {
                     SightReader.SetMidiInput(input);
                     break;
@@ -133,7 +133,7 @@ namespace App
         private void LoadDefaultMidiFile()
         {
             //SightReader.SetFile(@"C:\Users\Jason\Documents\OCR Sheet Music Converted\No_Game_No_Life_-_This_Game_-_Piano.xml");
-            SightReader.SetFile(@"C:\Users\Jason\Downloads\Interstellar_-_First_Step (1)\lg-166842060.xml");            
+            SightReader.SetFile(@"C:\Users\Jason\Dropbox\New Piano Sheet Music\Musescore\Original\Classicman - Chopin - Sonata Op. 58 No. 3 Mvt. 1.xml");            
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)

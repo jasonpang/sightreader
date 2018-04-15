@@ -33,12 +33,27 @@ namespace Engine.Builder
                 Measures = GetScorePartMeasures()
             };
         }
+
+        private bool IsInvalidMeasure(string rawMeasure)
+        {
+            foreach (char c in rawMeasure)
+            {
+                if (c < '0' || c > '9')
+                    return true;
+            }
+
+            return false;
+        }
         
         public IList<Measure> GetScorePartMeasures()
         {
             foreach (var rawMeasure in RawPart.measure)
             {
                 var measure = new MeasureBuilder(rawMeasure, Measures).BuildMeasure();
+                if (IsInvalidMeasure(rawMeasure.number))
+                {
+                    continue;
+                }
                 var measureNumber = Convert.ToInt32(rawMeasure.number);
                 if (Measures.ContainsKey(measureNumber))
                 {
