@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Engine.Playback
 {
@@ -70,9 +68,6 @@ namespace Engine.Playback
                             replacementDictionary.Add(entry.Key, entry.Value.Where(pitch => pitch != newPitch).ToList());
                         }
                     }
-                    //var existingOnPitch = OnOffMap.Values.SelectMany(x => x).First(pitch => pitch == newPitch);
-                    //OnOffMap.Remove(existingOnPitch.Key)
-                    //SightReader.Output.SendNoteOff(message.Channel, existingOnPitch, 127);
                     foreach (KeyValuePair<Midi.Pitch, List<Midi.Pitch>> entry in replacementDictionary)
                     {
                         OnOffMap[entry.Key] = entry.Value;

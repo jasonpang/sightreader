@@ -79,8 +79,10 @@ namespace App
             PopulateMidiInputOutputs();
             PopulateModes();
             ChooseDefaultMidiInputOutput();
-            LoadDefaultMidiFile();
-            SightReader.SetMode(SightReaderMode.Sightreading);
+            if (SightReader.Input != null)
+            {
+                SightReader.SetMode(SightReaderMode.Passthrough);
+            }
         }
 
         private void PopulateMidiInputOutputs()
@@ -241,6 +243,43 @@ namespace App
         private void Button_ChangeMeasure_Click(object sender, EventArgs e)
         {
             TrySetMeasure();
+        }
+
+        private void FormMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            int voice = GetVoiceForKey(e.KeyCode);
+
+            if (voice == -1)
+            {
+                return;
+            }
+
+
+        }
+
+        private int GetVoiceForKey(Keys key)
+        {
+            if (key == Keys.Q ||
+                key == Keys.W ||
+                key == Keys.E ||
+                key == Keys.R ||
+                key == Keys.T ||
+                key == Keys.Y ||
+                key == Keys.U)
+            {
+                return 2;
+            }
+            else if (key == Keys.G ||
+                key == Keys.H ||
+                key == Keys.J ||
+                key == Keys.K ||
+                key == Keys.L ||
+                key == Keys.OemSemicolon ||
+                key == Keys.OemQuotes)
+            {
+                return 1;
+            }
+            else return -1;
         }
     }
 }
