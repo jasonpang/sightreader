@@ -301,6 +301,13 @@ namespace Engine.Builder
                 note.Pitch.Alter = (int)pitch.alter;
             }
             note.Pitch.Octave = Convert.ToInt32(pitch.octave);
+
+            /* Hotfix: B# is one active too low */
+            if (pitch.step == step.B && pitch.alter == 1)
+            {
+                note.Pitch.Octave += 1;
+            }
+
             note.Pitch.Step = pitch.step.ToLetterString();
         }
 

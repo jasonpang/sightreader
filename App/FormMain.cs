@@ -30,9 +30,16 @@ namespace App
             SightReader.SongChanged += SightReader_SongChanged;
         }
 
-        private void Input_NoteOn(NoteOnMessage msg)
+        private void Input_NoteOn1(NoteOnMessage msg)
         {
+            try
+            {
+                LabelCurrentMeasure.Text = SightReader.PlaybackManager.GetMeasure(0).ToString() + " / " + SightReader.PlaybackManager.GetMeasure(1).ToString();
+            }
+            catch (Exception ex)
+            {
 
+            }
         }
 
         private void TextBox_Measure_TextChanged(object sender, EventArgs e)
@@ -56,7 +63,6 @@ namespace App
         private void SightReader_MidiInputChanged(object sender, EventArgs e)
         {
             StatusBar_Input.Text = SightReader.Input.Name;
-            SightReader.Input.NoteOn += Input_NoteOn;
         }
 
         private void SightReader_MidiOutputChanged(object sender, EventArgs e)
@@ -72,6 +78,17 @@ namespace App
         private void SightReader_SongChanged(object sender, EventArgs e)
         {
             StatusBar_FileName.Text = Path.GetFileName(SightReader.FilePath);
+        }
+
+        private void PlaybackManager_NoteProcessed(object sender, EventArgs e)
+        {
+            try
+            {
+                LabelCurrentMeasure.Invoke((MethodInvoker)(() => LabelCurrentMeasure.Text = SightReader.PlaybackManager.GetMeasureIndex(0).ToString() + " / " + SightReader.PlaybackManager.GetMeasureIndex(1).ToString()));
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -243,6 +260,7 @@ namespace App
         private void Button_ChangeMeasure_Click(object sender, EventArgs e)
         {
             TrySetMeasure();
+            SightReader.PlaybackManager.NoteProcessed += PlaybackManager_NoteProcessed;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Engine.Playback
         public IDictionary<int, int> VoiceMeasureElementMap { get; set; } = new Dictionary<int, int>();
         public SightReader SightReader { get; set; }
         private Dictionary<Midi.Pitch, List<Midi.Pitch>> OnOffMap { get; set; } = new Dictionary<Midi.Pitch, List<Midi.Pitch>>();
+        public event EventHandler NoteProcessed;
 
         public PlaybackManager(SightReader sightReader, Score score)
         {
@@ -102,6 +103,7 @@ namespace Engine.Playback
             else if (SightReader.Mode == SightReaderMode.Sightreading)
             {
                 SightReadOff(note);
+                NoteProcessed?.Invoke(this, null);
             }
         }
 

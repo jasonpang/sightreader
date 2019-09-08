@@ -50,6 +50,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.TextBox_Measure = new System.Windows.Forms.TextBox();
             this.Button_ChangeMeasure = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.LabelCurrentMeasure = new System.Windows.Forms.Label();
+            this.v11ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.SuspendLayout();
@@ -82,13 +85,13 @@
             // MainMenu_MIDI_Input
             // 
             this.MainMenu_MIDI_Input.Name = "MainMenu_MIDI_Input";
-            this.MainMenu_MIDI_Input.Size = new System.Drawing.Size(194, 42);
+            this.MainMenu_MIDI_Input.Size = new System.Drawing.Size(193, 42);
             this.MainMenu_MIDI_Input.Text = "Input";
             // 
             // MainMenu_MIDI_Output
             // 
             this.MainMenu_MIDI_Output.Name = "MainMenu_MIDI_Output";
-            this.MainMenu_MIDI_Output.Size = new System.Drawing.Size(194, 42);
+            this.MainMenu_MIDI_Output.Size = new System.Drawing.Size(193, 42);
             this.MainMenu_MIDI_Output.Text = "Output";
             // 
             // programToolStripMenuItem
@@ -102,14 +105,15 @@
             // MainMenu_Program_Mode
             // 
             this.MainMenu_Program_Mode.Name = "MainMenu_Program_Mode";
-            this.MainMenu_Program_Mode.Size = new System.Drawing.Size(179, 42);
+            this.MainMenu_Program_Mode.Size = new System.Drawing.Size(210, 42);
             this.MainMenu_Program_Mode.Text = "Mode";
             // 
             // debugToolStripMenuItem
             // 
             this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MainMenu_Debug_SendOutput,
-            this.MainMenu_Debug_Break});
+            this.MainMenu_Debug_Break,
+            this.v11ToolStripMenuItem});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             this.debugToolStripMenuItem.Size = new System.Drawing.Size(112, 42);
             this.debugToolStripMenuItem.Text = "Debug";
@@ -117,14 +121,14 @@
             // MainMenu_Debug_SendOutput
             // 
             this.MainMenu_Debug_SendOutput.Name = "MainMenu_Debug_SendOutput";
-            this.MainMenu_Debug_SendOutput.Size = new System.Drawing.Size(264, 42);
+            this.MainMenu_Debug_SendOutput.Size = new System.Drawing.Size(263, 42);
             this.MainMenu_Debug_SendOutput.Text = "Send Output";
             this.MainMenu_Debug_SendOutput.Click += new System.EventHandler(this.MainMenu_Debug_SendOutput_Click);
             // 
             // MainMenu_Debug_Break
             // 
             this.MainMenu_Debug_Break.Name = "MainMenu_Debug_Break";
-            this.MainMenu_Debug_Break.Size = new System.Drawing.Size(264, 42);
+            this.MainMenu_Debug_Break.Size = new System.Drawing.Size(263, 42);
             this.MainMenu_Debug_Break.Text = "Break";
             this.MainMenu_Debug_Break.Click += new System.EventHandler(this.MainMenu_Debug_Break_Click);
             // 
@@ -221,12 +225,37 @@
             this.Button_ChangeMeasure.UseVisualStyleBackColor = true;
             this.Button_ChangeMeasure.Click += new System.EventHandler(this.Button_ChangeMeasure_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 223);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(264, 45);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Current Measure:";
+            // 
+            // LabelCurrentMeasure
+            // 
+            this.LabelCurrentMeasure.AutoSize = true;
+            this.LabelCurrentMeasure.Location = new System.Drawing.Point(277, 224);
+            this.LabelCurrentMeasure.Name = "LabelCurrentMeasure";
+            this.LabelCurrentMeasure.Size = new System.Drawing.Size(0, 45);
+            this.LabelCurrentMeasure.TabIndex = 6;
+            // 
+            // v11ToolStripMenuItem
+            // 
+            this.v11ToolStripMenuItem.Name = "v11ToolStripMenuItem";
+            this.v11ToolStripMenuItem.Size = new System.Drawing.Size(263, 42);
+            this.v11ToolStripMenuItem.Text = "v1.1";
+            // 
             // FormMain
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(18F, 45F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1248, 819);
+            this.Controls.Add(this.LabelCurrentMeasure);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.Button_ChangeMeasure);
             this.Controls.Add(this.TextBox_Measure);
             this.Controls.Add(this.label1);
@@ -278,6 +307,9 @@
         private System.Windows.Forms.TextBox TextBox_Measure;
         private System.Windows.Forms.ToolStripMenuItem MainMenu_Debug_Break;
         private System.Windows.Forms.Button Button_ChangeMeasure;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label LabelCurrentMeasure;
+        private System.Windows.Forms.ToolStripMenuItem v11ToolStripMenuItem;
     }
 }
 
